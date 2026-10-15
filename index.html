@@ -32,6 +32,9 @@
 .aigc-strategy-cover{width:40px;height:54px;object-fit:cover;border-radius:4px;flex-shrink:0}
 .aigc-strategy-copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0;gap:4px}
 .aigc-strategy-name{font-size:14px;font-weight:600;color:#2c3337}
+.aigc-strategy-image-link{display:block;flex-shrink:0;padding:0;border-radius:4px;cursor:pointer}
+button.aigc-strategy-name{text-align:left;cursor:pointer}
+button.aigc-strategy-name:hover{color:#258e8d;text-decoration:underline;text-underline-offset:3px}
 .aigc-strategy-description{font-size:12px;line-height:1.5;color:#899095;max-width:380px}
 .aigc-generated-count{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#339693;margin-top:2px}
 .aigc-disclosure-chevron{display:block;transition:transform .15s}
@@ -2102,9 +2105,13 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
         },
           aigcNode("div", { className: "aigc-strategy-row" },
             aigcNode("div", { className: "aigc-strategy-identity" },
-              aigcNode("img", { className: "aigc-strategy-cover", src: Rd[config.assets[index]], alt: "" }),
+              aigcNode("button", { className: "aigc-strategy-image-link", type: "button",
+                "aria-label": `Preview ${name} strategy`, onClick: () => onDetails(index),
+              }, aigcNode("img", { className: "aigc-strategy-cover", src: Rd[config.assets[index]], alt: "" })),
               aigcNode("div", { className: "aigc-strategy-copy" },
-                aigcNode("span", { className: "aigc-strategy-name" }, name),
+                aigcNode("button", { className: "aigc-strategy-name", type: "button",
+                  "aria-label": `About ${name}`, onClick: () => onDetails(index),
+                }, name),
                 aigcNode("span", { className: "aigc-strategy-description" }, aigcDescriptions[index]),
                 aigcNode("button", {
                   className: "aigc-text-link aigc-brand-controls-link", type: "button",
@@ -2126,8 +2133,7 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
           aigcNode("div", { id: `aigc-strategy-videos-${index}`, className: "aigc-strategy-expanded", hidden: !isOpen },
             aigcNode("div", { className: "aigc-generated-heading" },
               aigcNode("h4", {}, "Generated videos", aigcNode("span", {}, `${zd.length}`),
-                adoptedCount > 0 && aigcNode("span", { className: "aigc-adopted-count" }, `${adoptedCount} adopted`)),
-              aigcNode("button", { className: "aigc-text-link", onClick: () => onDetails(index) }, "About this strategy")),
+                adoptedCount > 0 && aigcNode("span", { className: "aigc-adopted-count" }, `${adoptedCount} adopted`))),
             aigcNode("div", { className: "aigc-generated-grid" }, ...zd.map((asset, video) => {
               const adopted = config.adopted[index][video];
               const adoptionKey = `${index}:${video}`;

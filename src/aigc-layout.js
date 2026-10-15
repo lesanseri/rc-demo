@@ -130,9 +130,13 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
         },
           aigcNode("div", { className: "aigc-strategy-row" },
             aigcNode("div", { className: "aigc-strategy-identity" },
-              aigcNode("img", { className: "aigc-strategy-cover", src: Rd[config.assets[index]], alt: "" }),
+              aigcNode("button", { className: "aigc-strategy-image-link", type: "button",
+                "aria-label": `Preview ${name} strategy`, onClick: () => onDetails(index),
+              }, aigcNode("img", { className: "aigc-strategy-cover", src: Rd[config.assets[index]], alt: "" })),
               aigcNode("div", { className: "aigc-strategy-copy" },
-                aigcNode("span", { className: "aigc-strategy-name" }, name),
+                aigcNode("button", { className: "aigc-strategy-name", type: "button",
+                  "aria-label": `About ${name}`, onClick: () => onDetails(index),
+                }, name),
                 aigcNode("span", { className: "aigc-strategy-description" }, aigcDescriptions[index]),
                 aigcNode("button", {
                   className: "aigc-text-link aigc-brand-controls-link", type: "button",
@@ -154,8 +158,7 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
           aigcNode("div", { id: `aigc-strategy-videos-${index}`, className: "aigc-strategy-expanded", hidden: !isOpen },
             aigcNode("div", { className: "aigc-generated-heading" },
               aigcNode("h4", {}, "Generated videos", aigcNode("span", {}, `${zd.length}`),
-                adoptedCount > 0 && aigcNode("span", { className: "aigc-adopted-count" }, `${adoptedCount} adopted`)),
-              aigcNode("button", { className: "aigc-text-link", onClick: () => onDetails(index) }, "About this strategy")),
+                adoptedCount > 0 && aigcNode("span", { className: "aigc-adopted-count" }, `${adoptedCount} adopted`))),
             aigcNode("div", { className: "aigc-generated-grid" }, ...zd.map((asset, video) => {
               const adopted = config.adopted[index][video];
               const adoptionKey = `${index}:${video}`;

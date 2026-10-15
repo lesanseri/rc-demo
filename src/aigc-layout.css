@@ -29,6 +29,9 @@
 .aigc-strategy-cover{width:40px;height:54px;object-fit:cover;border-radius:4px;flex-shrink:0}
 .aigc-strategy-copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0;gap:4px}
 .aigc-strategy-name{font-size:14px;font-weight:600;color:#2c3337}
+.aigc-strategy-image-link{display:block;flex-shrink:0;padding:0;border-radius:4px;cursor:pointer}
+button.aigc-strategy-name{text-align:left;cursor:pointer}
+button.aigc-strategy-name:hover{color:#258e8d;text-decoration:underline;text-underline-offset:3px}
 .aigc-strategy-description{font-size:12px;line-height:1.5;color:#899095;max-width:380px}
 .aigc-generated-count{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#339693;margin-top:2px}
 .aigc-disclosure-chevron{display:block;transition:transform .15s}
