@@ -114,12 +114,16 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
     aigcNode("section", { className: "aigc-during", "aria-labelledby": "aigc-during-title" },
       aigcNode("div", { className: "aigc-during-heading" },
         aigcNode("div", {},
-          aigcNode("h2", { id: "aigc-during-title" }, "During campaign"),
+          aigcNode("div", { className: "aigc-automation-title-row" },
+            aigcNode("h2", { id: "aigc-during-title" }, "AI creative automation"),
+            aigcNode("span", { className: "aigc-active-count" }, `${active} of 4 active`)),
           aigcNode("p", { className: "aigc-section-description" },
-            "Keep your ads fresh automatically. Set how each strategy adds new creatives throughout your campaign."))),
-      aigcNode("div", { className: "aigc-strategy-heading" },
-        aigcNode("h3", {}, "Generation strategies"),
-        aigcNode("span", { className: "aigc-active-count" }, `${active} of 4 active`)),
+            "Keep your campaign fresh with a continuous supply of AI video variations to help reduce creative fatigue. Choose how each strategy adds them to your campaign."))),
+      aigcNode("div", { className: "aigc-performance-banner", role: "note", "aria-label": "Creative performance uplift" },
+        aigcNode(ve, { size: 16, "aria-hidden": true }),
+        aigcNode("p", {}, "Campaigns using auto-generated creatives saw ",
+          aigcNode("strong", {}, "+28% CTR"), " and ",
+          aigcNode("strong", {}, "+19% CVR"), " on average.")),
       aigcNode("div", { className: "aigc-strategy-list" }, ...aigcNames.map((name, index) => {
         const isOpen = expanded.includes(index);
         const mode = config.strategyModes[index];

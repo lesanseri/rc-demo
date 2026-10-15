@@ -18,6 +18,13 @@
 .aigc-selection-panel h2{font-size:19px;font-weight:600;margin:0 0 6px}
 .aigc-during-heading{display:flex;align-items:flex-start;gap:24px;margin-bottom:20px}
 .aigc-during-heading>div{flex:1;min-width:0}
+.aigc-automation-title-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px}
+.aigc-automation-title-row h2{margin:0}
+.aigc-automation-title-row .aigc-active-count{white-space:nowrap}
+.aigc-performance-banner{display:flex;align-items:center;gap:9px;padding:11px 13px;margin:0 0 18px;border:1px solid #dbece3;border-left:3px solid #66ae94;border-radius:4px;background:#f0f8f4;color:#478a77;font-size:12px;line-height:1.6}
+.aigc-performance-banner>svg{flex-shrink:0}
+.aigc-performance-banner p{flex:1;margin:0}
+.aigc-performance-banner strong{color:#259080;font-weight:600;white-space:nowrap}
 .aigc-section-description{font-size:13px;color:#858d91;line-height:1.65;margin:0}
 .aigc-text-link{color:#2d9c9b;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer}
 .aigc-brand-link{padding-top:5px;white-space:nowrap}
@@ -2089,12 +2096,16 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
     aigcNode("section", { className: "aigc-during", "aria-labelledby": "aigc-during-title" },
       aigcNode("div", { className: "aigc-during-heading" },
         aigcNode("div", {},
-          aigcNode("h2", { id: "aigc-during-title" }, "During campaign"),
+          aigcNode("div", { className: "aigc-automation-title-row" },
+            aigcNode("h2", { id: "aigc-during-title" }, "AI creative automation"),
+            aigcNode("span", { className: "aigc-active-count" }, `${active} of 4 active`)),
           aigcNode("p", { className: "aigc-section-description" },
-            "Keep your ads fresh automatically. Set how each strategy adds new creatives throughout your campaign."))),
-      aigcNode("div", { className: "aigc-strategy-heading" },
-        aigcNode("h3", {}, "Generation strategies"),
-        aigcNode("span", { className: "aigc-active-count" }, `${active} of 4 active`)),
+            "Keep your campaign fresh with a continuous supply of AI video variations to help reduce creative fatigue. Choose how each strategy adds them to your campaign."))),
+      aigcNode("div", { className: "aigc-performance-banner", role: "note", "aria-label": "Creative performance uplift" },
+        aigcNode(ve, { size: 16, "aria-hidden": true }),
+        aigcNode("p", {}, "Campaigns using auto-generated creatives saw ",
+          aigcNode("strong", {}, "+28% CTR"), " and ",
+          aigcNode("strong", {}, "+19% CVR"), " on average.")),
       aigcNode("div", { className: "aigc-strategy-list" }, ...aigcNames.map((name, index) => {
         const isOpen = expanded.includes(index);
         const mode = config.strategyModes[index];

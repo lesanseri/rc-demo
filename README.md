@@ -6,7 +6,8 @@ Standalone TikTok Ads Manager creative-assets prototype. Open `index.html` direc
 
 - Auto-generated is a dedicated section in the main Creative assets form, below manually selected assets. It is independent of Selected recommendations.
 - The main section emphasizes campaign generation and displays each strategy's own handling mode.
-- Its edit action opens the Auto-generated tab, focused on During campaign. Available now is removed from this tab. Individual adoption is a secondary action within each expanded strategy.
+- Its edit action opens the Auto-generated tab, headed AI creative automation. Available now is removed from this tab. Individual adoption is a secondary action within each expanded strategy.
+- The automation introduction is followed by a green performance banner with the original illustrative +28% CTR / +19% CVR figures. There is no redundant Generation strategies subheading.
 - Four strategies (Visual overlay, Audio refresh, Remix generation, Seedance) independently support Auto-add / Notify for approval / Don't add in place of toggles.
 - Click a strategy title or image to open its description and preview. The far-right chevron expands generated videos; there is no separate About this strategy link.
 - Each strategy expands to show its generated creative previews. One compact 66 × 22 px control stays at the bottom right: hover or keyboard focus reveals Adopt; adopting changes it in place to Adopted; hovering or focusing again reveals Cancel in the same control. Touch devices show the action without hover. The preview dialog supports the same adoption action.

@@ -15,6 +15,13 @@
 .aigc-selection-panel h2{font-size:19px;font-weight:600;margin:0 0 6px}
 .aigc-during-heading{display:flex;align-items:flex-start;gap:24px;margin-bottom:20px}
 .aigc-during-heading>div{flex:1;min-width:0}
+.aigc-automation-title-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:6px}
+.aigc-automation-title-row h2{margin:0}
+.aigc-automation-title-row .aigc-active-count{white-space:nowrap}
+.aigc-performance-banner{display:flex;align-items:center;gap:9px;padding:11px 13px;margin:0 0 18px;border:1px solid #dbece3;border-left:3px solid #66ae94;border-radius:4px;background:#f0f8f4;color:#478a77;font-size:12px;line-height:1.6}
+.aigc-performance-banner>svg{flex-shrink:0}
+.aigc-performance-banner p{flex:1;margin:0}
+.aigc-performance-banner strong{color:#259080;font-weight:600;white-space:nowrap}
 .aigc-section-description{font-size:13px;color:#858d91;line-height:1.65;margin:0}
 .aigc-text-link{color:#2d9c9b;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer}
 .aigc-brand-link{padding-top:5px;white-space:nowrap}
