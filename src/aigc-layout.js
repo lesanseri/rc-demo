@@ -15,7 +15,7 @@ const aigcModeLabel = (value) => aigcModes.find((mode) => mode.value === value)?
 const aigcModeHelp = (value) => ({
   auto: "New videos are added to your campaign automatically.",
   review: "Approve new videos before they're added to your campaign.",
-  manual: "New videos from this strategy won't be added.",
+  manual: "New videos won't be added automatically.",
 })[value];
 const aigcNode = (type, props = {}, ...children) =>
   (0, U.jsx)(type, { ...props, ...(children.length ? { children } : {}) });
@@ -39,6 +39,7 @@ function AigcModeSelector({ value, onChange, strategy, compact = false }) {
 
 function AigcEditorSummary({ config, onEdit }) {
   const active = config.strategyModes.filter((mode) => mode !== "manual").length;
+  const adopted = config.adopted.flat().filter(Boolean).length;
   return aigcNode("section", { className: "editor-aigc", "aria-label": "Auto-generated creative assets" },
     aigcNode("h3", {},
       aigcNode(ge, { size: 17 }), "Auto-generated",
@@ -57,18 +58,30 @@ function AigcEditorSummary({ config, onEdit }) {
       aigcNode("span", { className: "editor-aigc-strategy-mode" },
         aigcModeLabel(config.strategyModes[index]),
         aigcNode("span", { "aria-hidden": true }, "›"))))),
+    adopted > 0 && aigcNode("button", { className: "editor-aigc-adopted-summary", onClick: onEdit },
+      aigcNode(N, { size: 12 }), `${adopted} ${adopted === 1 ? "video" : "videos"} adopted individually`),
   );
 }
 
 function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
   const [expanded, setExpanded] = (0, C.useState)([]);
   const [preview, setPreview] = (0, C.useState)(null);
+  const [adoptionMessage, setAdoptionMessage] = (0, C.useState)("");
   const active = config.strategyModes.filter((mode) => mode !== "manual").length;
   const toggleExpanded = (index) => setExpanded((current) => current.includes(index)
     ? current.filter((item) => item !== index) : [...current, index]);
   const setMode = (index, mode) => onChange((current) => withAigcStrategyModes(current,
     current.strategyModes.map((value, strategy) => strategy === index ? mode : value)));
   const videoName = (strategy, video) => `AI-071125-${strategy + 1}${String(video + 1).padStart(2, "0")}`;
+  const toggleAdoption = (strategy, video) => {
+    const next = !config.adopted[strategy][video];
+    onChange((current) => ({
+      ...current,
+      adopted: current.adopted.map((items, index) => index === strategy
+        ? items.map((value, item) => item === video ? next : value) : items),
+    }));
+    setAdoptionMessage(`${videoName(strategy, video)} ${next ? "adopted" : "adoption undone"}. Save changes to apply.`);
+  };
 
   return aigcNode("div", { className: "aigc-selection-panel" },
     aigcNode("section", { className: "aigc-during", "aria-labelledby": "aigc-during-title" },
@@ -84,6 +97,7 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
       aigcNode("div", { className: "aigc-strategy-list" }, ...aigcNames.map((name, index) => {
         const isOpen = expanded.includes(index);
         const mode = config.strategyModes[index];
+        const adoptedCount = config.adopted[index].filter(Boolean).length;
         return aigcNode("article", {
           className: `aigc-strategy-accordion${isOpen ? " is-expanded" : ""}`,
           key: name,
@@ -107,10 +121,13 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
               aigcNode("p", { className: "aigc-mode-help", role: "status" }, aigcModeHelp(mode)))),
           aigcNode("div", { id: `aigc-strategy-videos-${index}`, className: "aigc-strategy-expanded", hidden: !isOpen },
             aigcNode("div", { className: "aigc-generated-heading" },
-              aigcNode("h4", {}, "Generated videos", aigcNode("span", {}, `${zd.length}`)),
+              aigcNode("h4", {}, "Generated videos", aigcNode("span", {}, `${zd.length}`),
+                adoptedCount > 0 && aigcNode("span", { className: "aigc-adopted-count" }, `${adoptedCount} adopted`)),
               aigcNode("button", { className: "aigc-text-link", onClick: () => onDetails(index) }, "About this strategy")),
-            aigcNode("div", { className: "aigc-generated-grid" }, ...zd.map((asset, video) =>
-              aigcNode("article", { className: "aigc-video-card", key: asset },
+            aigcNode("div", { className: "aigc-generated-grid" }, ...zd.map((asset, video) => {
+              const adopted = config.adopted[index][video];
+              return aigcNode("article", { className: `aigc-video-card${adopted ? " is-adopted" : ""}`, key: asset },
+                aigcNode("div", { className: "aigc-video-media-wrap" },
                 aigcNode("button", {
                   className: "aigc-video-preview", type: "button",
                   "aria-label": `Preview ${name} video ${video + 1}`,
@@ -119,12 +136,23 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
                   aigcNode("img", { src: Rd[(config.assets[index] + video) % Rd.length], alt: `${name} generated creative ${video + 1}` }),
                   aigcNode("span", { className: "aigc-video-play", "aria-hidden": true }, aigcNode(ue, { size: 17, fill: "currentColor" })),
                   aigcNode("span", { className: "aigc-duration" }, "00:15")),
+                adopted && aigcNode("span", { className: "aigc-adopted-badge" }, aigcNode(N, { size: 11 }), "Adopted"),
+                aigcNode("button", {
+                  className: `aigc-adopt-action${adopted ? " is-undo" : ""}`, type: "button",
+                  "aria-label": `${adopted ? "Undo adoption of" : "Adopt"} ${name} video ${video + 1}`,
+                  "aria-pressed": adopted,
+                  onClick: () => toggleAdoption(index, video),
+                }, aigcNode(adopted ? H : de, { size: 12 }), adopted ? "Undo" : "Adopt")),
                 aigcNode("p", {}, videoName(index, video)),
-              ))),
+              );
+            })),
+            aigcNode("p", { className: "aigc-single-adopt-note" },
+              "You can adopt individual videos in any mode. Save changes to apply your selections."),
           ));
       })),
       aigcNode("p", { className: "aigc-controls-note" },
         "These preferences apply to new creatives during your campaign. Existing creatives stay unchanged.")),
+    aigcNode("p", { className: "sr-only", role: "status", "aria-live": "polite" }, adoptionMessage),
     aigcNode(Mu, { open: preview !== null, onOpenChange: (open) => { if (!open) setPreview(null); } },
       aigcNode(Fu, { className: "aigc-video-dialog" }, preview && aigcNode(U.Fragment, {},
         aigcNode(Iu, { className: "aigc-preview-title" }, `${aigcNames[preview.strategy]} · ${videoName(preview.strategy, preview.video)}`),
@@ -135,6 +163,14 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
             onClick: () => setPreview((current) => ({ ...current, playing: !current.playing })),
           }, aigcNode(preview.playing ? ce : ue, { size: 28, fill: "currentColor" })),
           aigcNode("span", { className: "strategy-preview-note" }, "Animated image preview")),
+        aigcNode("div", { className: "aigc-preview-adoption" },
+          aigcNode("span", {}, config.adopted[preview.strategy][preview.video] ? "Adopted for this campaign" : "Adopt this video without changing your strategy settings."),
+          aigcNode("button", {
+            className: "aigc-preview-adopt-button", type: "button",
+            "aria-label": `${config.adopted[preview.strategy][preview.video] ? "Undo adoption of" : "Adopt"} previewed video`,
+            "aria-pressed": config.adopted[preview.strategy][preview.video],
+            onClick: () => toggleAdoption(preview.strategy, preview.video),
+          }, config.adopted[preview.strategy][preview.video] ? "Undo adoption" : "Adopt")),
       ))),
   );
 }

@@ -49,7 +49,11 @@ function readAigcConfig(e = `materials`) {
       return aigcModes.some((mode) => mode.value === saved)
         ? saved : t.enabled[index] ? t.addMode : "manual";
     });
-    return withAigcStrategyModes(t, modes);
+    // Manual adoption is explicit; automatic generation does not count as a
+    // user's adoption. Older automatic selections remain stored separately.
+    const adopted = aigcNames.map((_, strategy) => zd.map((_, video) =>
+      Array.isArray(t.adopted?.[strategy]) && t.adopted[strategy][video] === true));
+    return withAigcStrategyModes({ ...t, adopted }, modes);
 }
 function Jd() {
   let [e, t] = (0, C.useState)(Ci),
