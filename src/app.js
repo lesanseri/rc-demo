@@ -56,7 +56,7 @@ function readAigcConfig(e = `materials`) {
     return withAigcStrategyModes({ ...t, adopted }, modes);
 }
 function Jd() {
-  let [e, t] = (0, C.useState)(Ci),
+  let [brandControls, setBrandControls] = (0, C.useState)(readAigcBrandControls),
     [n, r] = (0, C.useState)(`manual`),
     [i, a] = (0, C.useState)(!1),
     [o, s] = (0, C.useState)(
@@ -398,7 +398,7 @@ function Jd() {
                   config: j,
                   onChange: M,
                   onDetails: be,
-                  onControls: () => ie(0),
+                  onControls: (index) => ie(index),
                 }),
                 g === `library` &&
                   (0, U.jsxs)(`section`, {
@@ -954,10 +954,15 @@ function Jd() {
             }),
             V !== null &&
               (0, U.jsx)(Ti, {
-                value: e,
+                key: V,
+                strategyIndex: V,
+                value: brandControls[V],
                 onCancel: () => ie(null),
-                onApply: (e) => {
-                  (t(e), ie(null));
+                onApply: (updated) => {
+                  const next = brandControls.map((value, index) => index === V ? structuredClone(updated) : value);
+                  saveAigcBrandControls(next);
+                  setBrandControls(next);
+                  ie(null);
                 },
               }),
           ],

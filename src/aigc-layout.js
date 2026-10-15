@@ -12,17 +12,42 @@ const aigcModes = [
   { value: "manual", label: "Don't add" },
 ];
 const aigcModeLabel = (value) => aigcModes.find((mode) => mode.value === value)?.label;
-const aigcModeHelp = (value) => ({
-  auto: "New videos are added to your campaign automatically.",
-  review: "Approve new videos before they're added to your campaign.",
-  manual: "New videos won't be added automatically.",
-})[value];
 const aigcNode = (type, props = {}, ...children) =>
   (0, U.jsx)(type, { ...props, ...(children.length ? { children } : {}) });
 
 // Keep the original runtime's enabled flags in sync for legacy dialogs and data.
 function withAigcStrategyModes(config, modes) {
   return { ...config, strategyModes: [...modes], enabled: modes.map((mode) => mode !== "manual") };
+}
+
+function readAigcBrandControls() {
+  let saved = [];
+  try {
+    const parsed = JSON.parse(localStorage.getItem("aigc-brand-controls-v1") || "null", (_, value) => {
+      const index = value?.__aigcDemoImage;
+      return value && typeof value === "object" && Object.keys(value).length === 1 &&
+        Number.isInteger(index) && index >= 0 && index < window.__creativeImages.length
+        ? window.__creativeImages[index] : value;
+    });
+    if (Array.isArray(parsed)) saved = parsed;
+  } catch {}
+  return aigcNames.map((_, index) => {
+    const base = structuredClone({ ...Ci, seedance: Ci.seedance || Si });
+    const value = saved[index];
+    return value && Array.isArray(value.enabled) && Array.isArray(value.words) && Array.isArray(value.tracks)
+      ? { ...base, ...value, seedance: Array.isArray(value.seedance?.products) ? value.seedance : base.seedance }
+      : base;
+  });
+}
+
+function saveAigcBrandControls(controls) {
+  // Reuse bundled images by reference so the same demo photos aren't copied
+  // into browser storage four times. Uploaded images retain their own data.
+  const encoded = JSON.stringify(controls, (_, value) => {
+    const index = typeof value === "string" ? window.__creativeImages.indexOf(value) : -1;
+    return index >= 0 ? { __aigcDemoImage: index } : value;
+  });
+  localStorage.setItem("aigc-brand-controls-v1", encoded);
 }
 
 function AigcModeSelector({ value, onChange, strategy, compact = false }) {
@@ -91,8 +116,7 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
         aigcNode("div", {},
           aigcNode("h2", { id: "aigc-during-title" }, "During campaign"),
           aigcNode("p", { className: "aigc-section-description" },
-            "Keep your ads fresh automatically. Set how each strategy adds new creatives throughout your campaign.")),
-        aigcNode("button", { className: "aigc-text-link aigc-brand-link", onClick: onControls }, "Brand Kit & controls")),
+            "Keep your ads fresh automatically. Set how each strategy adds new creatives throughout your campaign."))),
       aigcNode("div", { className: "aigc-strategy-heading" },
         aigcNode("h3", {}, "Generation strategies"),
         aigcNode("span", { className: "aigc-active-count" }, `${active} of 4 active`)),
@@ -105,22 +129,28 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
           key: name,
         },
           aigcNode("div", { className: "aigc-strategy-row" },
+            aigcNode("div", { className: "aigc-strategy-identity" },
+              aigcNode("img", { className: "aigc-strategy-cover", src: Rd[config.assets[index]], alt: "" }),
+              aigcNode("div", { className: "aigc-strategy-copy" },
+                aigcNode("span", { className: "aigc-strategy-name" }, name),
+                aigcNode("span", { className: "aigc-strategy-description" }, aigcDescriptions[index]),
+                aigcNode("button", {
+                  className: "aigc-text-link aigc-brand-controls-link", type: "button",
+                  "aria-label": `Brand controls for ${name}`,
+                  onClick: () => onControls(index),
+                }, "Brand controls"))),
+            aigcNode("div", { className: "aigc-strategy-settings" },
+              aigcNode(AigcModeSelector, { value: mode, strategy: name,
+                onChange: (value) => setMode(index, value) })),
             aigcNode("button", {
-              className: "aigc-strategy-disclosure", type: "button",
+              className: "aigc-strategy-expand", type: "button",
               "aria-expanded": isOpen, "aria-controls": `aigc-strategy-videos-${index}`,
               "aria-label": `${isOpen ? "Collapse" : "Expand"} ${name} generated videos`,
               onClick: () => toggleExpanded(index),
-            },
-              aigcNode("img", { className: "aigc-strategy-cover", src: Rd[config.assets[index]], alt: "" }),
-              aigcNode("span", { className: "aigc-strategy-copy" },
-                aigcNode("span", { className: "aigc-strategy-name" }, name),
-                aigcNode("span", { className: "aigc-strategy-description" }, aigcDescriptions[index]),
-                aigcNode("span", { className: "aigc-generated-count" }, `${zd.length} generated videos`,
-                  aigcNode("span", { className: "aigc-disclosure-chevron", "aria-hidden": true }, "⌄")))),
-            aigcNode("div", { className: "aigc-strategy-settings" },
-              aigcNode(AigcModeSelector, { value: mode, strategy: name,
-                onChange: (value) => setMode(index, value) }),
-              aigcNode("p", { className: "aigc-mode-help", role: "status" }, aigcModeHelp(mode)))),
+            }, aigcNode("svg", { className: "aigc-disclosure-chevron", width: 16, height: 16,
+              viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.8,
+              "aria-hidden": true,
+            }, aigcNode("path", { d: "M6 9l6 6 6-6", strokeLinecap: "round", strokeLinejoin: "round" })))),
           aigcNode("div", { id: `aigc-strategy-videos-${index}`, className: "aigc-strategy-expanded", hidden: !isOpen },
             aigcNode("div", { className: "aigc-generated-heading" },
               aigcNode("h4", {}, "Generated videos", aigcNode("span", {}, `${zd.length}`),

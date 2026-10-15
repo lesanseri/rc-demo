@@ -25,14 +25,14 @@
 .aigc-strategy-accordion{border:1px solid #e7ebec;background:#fff;border-radius:6px;overflow:hidden}
 .aigc-strategy-accordion.is-expanded{border-color:#c5dfdf}
 .aigc-strategy-row{display:flex;align-items:center;gap:24px;padding:12px;background:#fafbfb}
-.aigc-strategy-disclosure{display:flex;align-items:center;gap:13px;flex:1;min-width:0;text-align:left;cursor:pointer}
+.aigc-strategy-identity{display:flex;align-items:center;gap:13px;flex:1;min-width:0;text-align:left}
 .aigc-strategy-cover{width:40px;height:54px;object-fit:cover;border-radius:4px;flex-shrink:0}
 .aigc-strategy-copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0;gap:4px}
 .aigc-strategy-name{font-size:14px;font-weight:600;color:#2c3337}
 .aigc-strategy-description{font-size:12px;line-height:1.5;color:#899095;max-width:380px}
 .aigc-generated-count{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#339693;margin-top:2px}
-.aigc-disclosure-chevron{font-size:16px;line-height:1;transform:translateY(-2px);transition:transform .15s}
-.is-expanded .aigc-disclosure-chevron{transform:rotate(180deg) translateY(-2px)}
+.aigc-disclosure-chevron{display:block;transition:transform .15s}
+.is-expanded .aigc-disclosure-chevron{transform:rotate(180deg)}
 .aigc-strategy-settings{width:335px;flex-shrink:0}
 .aigc-strategy-modes{display:flex;border:1px solid #d5dadc;border-radius:4px;background:#fff;overflow:hidden}
 .aigc-strategy-modes>button{cursor:pointer;flex:1;white-space:nowrap;padding:9px 11px;border-right:1px solid #d5dadc;color:#5f696f;font-size:11px;font-weight:500;text-align:center;line-height:1.3}
@@ -86,3 +86,9 @@
 .aigc-preview-adopt-button[aria-pressed=true]{background:#fff;color:#348f85;border-color:#c1dcd6}
 @media(hover:none){.aigc-adopt-action{opacity:1;pointer-events:auto}.aigc-video-play{background:linear-gradient(transparent 40%,#0007)}}
 @media(prefers-reduced-motion:reduce){.aigc-adopt-action{transition:none}}
+
+.aigc-brand-controls-link{font-size:11px;margin-top:2px}
+.aigc-strategy-expand{display:flex;align-items:center;justify-content:center;flex-shrink:0;width:26px;height:28px;cursor:pointer;color:#75848a;border-radius:4px}
+.aigc-strategy-expand:hover{background:#eaf3f2;color:#299894}
+.aigc-strategy-row{gap:16px;position:relative}
+@media(max-width:700px){.aigc-strategy-identity{padding-right:32px}.aigc-strategy-expand{position:absolute;right:12px;top:12px}}
