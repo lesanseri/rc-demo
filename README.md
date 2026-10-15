@@ -5,10 +5,12 @@ Standalone TikTok Ads Manager creative-assets prototype. Open `index.html` direc
 ## Creation-flow AIGC layout
 
 - Auto-generated is a dedicated section in the main Creative assets form, below manually selected assets. It is independent of Selected recommendations.
-- The main section shows selected creative count, new-generation handling, and strategy status.
-- Its edit action opens the dedicated Auto-generated drawer tab, with Available now selections and During campaign settings.
-- Existing creative selections are independent of future-generation strategy toggles and Auto-add / Notify for approval / Don't add.
-- Save updates the main summary and local storage. Cancel discards selection and strategy changes. Strategy previews, the creative browser, and Brand Kit controls remain available.
+- The main section emphasizes campaign generation and displays each strategy's own handling mode.
+- Its edit action opens the Auto-generated tab, focused on During campaign. Available now and individual creative selection controls are removed from this tab.
+- Four strategies (Visual overlay, Audio refresh, Remix generation, Seedance) independently support Auto-add / Notify for approval / Don't add in place of toggles.
+- Each strategy expands to show its generated creative previews. Viewing or previewing a creative does not change campaign preferences.
+- Save updates the main summary and local storage. Cancel discards draft strategy changes. Brand Kit controls and strategy descriptions remain available.
+- Previously saved global modes and disabled strategies migrate to per-strategy preferences. Existing asset selections remain unchanged.
 - Existing demo strategies, including Seedance and Remix, are retained. This prototype does not represent current production availability.
 
 ## Editing

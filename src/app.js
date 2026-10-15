@@ -2,7 +2,8 @@ function readAigcConfig(e = `materials`) {
     let t = Wd(e === `empty`);
     try {
       let n = JSON.parse(
-        localStorage.getItem(`aigc-config-v4-` + e) ||
+        localStorage.getItem(`aigc-config-v5-` + e) ||
+          localStorage.getItem(`aigc-config-v4-` + e) ||
           localStorage.getItem(`aigc-config-v3-` + e) ||
           localStorage.getItem(`aigc-config-v2-` + e) ||
           `null`,
@@ -43,7 +44,12 @@ function readAigcConfig(e = `materials`) {
               : Hd.map((e, r) => zd.map(() => n.enabled[r] ?? t.enabled[r])),
         });
     } catch {}
-    return t;
+    const modes = aigcNames.map((_, index) => {
+      const saved = t.strategyModes?.[index];
+      return aigcModes.some((mode) => mode.value === saved)
+        ? saved : t.enabled[index] ? t.addMode : "manual";
+    });
+    return withAigcStrategyModes(t, modes);
 }
 function Jd() {
   let [e, t] = (0, C.useState)(Ci),
@@ -80,7 +86,7 @@ function Jd() {
     [me, he] = (0, C.useState)(``),
     [_e, ye] = (0, C.useState)(``);
   function be(e) {
-    (fe([...j.enabled]), le(e), oe(!1));
+    (fe([...j.strategyModes]), le(e), oe(!1));
   }
   function xe(e) {
     let t = e.source + `:` + e.strategyIndex;
@@ -91,24 +97,9 @@ function Jd() {
     h(e); M(config); setSavedConfig(config); _(destination);
     I(null); z(null); ie(null); ye(``); p(true);
   }
-  function Ce(e, t) {
-    M((n) => ({ ...n, enabled: n.enabled.map((n, r) => (r === e ? t : n)) }));
-  }
-  function we(e) {
-    M((config) => ({ ...config, addMode: e }));
-  }
-  function Te(e) {
-    M((t) => {
-      let n = t.selected[e].every(Boolean);
-      return {
-        ...t,
-        selected: t.selected.map((t, r) => (r === e ? t.map(() => !n) : t)),
-      };
-    });
-  }
   function Ee() {
     try {
-      (localStorage.setItem(`aigc-config-v4-` + m, JSON.stringify(j)),
+      (localStorage.setItem(`aigc-config-v5-` + m, JSON.stringify(j)),
         setSavedConfig(structuredClone(j)),
         ye(`Changes saved on this device`),
         p(!1));
@@ -116,14 +107,7 @@ function Jd() {
       ye(`Could not save. Please try again.`);
     }
   }
-  let De = j.enabled.filter(Boolean).length,
-    Oe = j.selected.flat().filter(Boolean).length,
-    ke = j.selected.reduce(
-      (e, t, n) =>
-        e +
-        (j.addMode === `manual` || j.enabled[n] ? t.filter(Boolean).length : 0),
-      0,
-    );
+  const activeStrategies = j.strategyModes.filter((mode) => mode !== "manual").length;
   return (0, U.jsxs)(`main`, {
     className: `home`,
     children: [
@@ -409,13 +393,8 @@ function Jd() {
                 g === `aigc` && (0, U.jsx)(AigcSelectionPanel, {
                   config: j,
                   onChange: M,
-                  onStrategyToggle: Ce,
-                  onModeChange: we,
                   onDetails: be,
                   onControls: () => ie(0),
-                  onViewAssets: (index) => {
-                    E(null); z(index); re([...j.selected[index]]); I(null);
-                  },
                 }),
                 g === `library` &&
                   (0, U.jsxs)(`section`, {
@@ -667,7 +646,7 @@ function Jd() {
                     g === `library`
                       ? `${Object.values(D).flat().filter(Boolean).length} library creatives selected`
                       : g === `aigc`
-                        ? `${Oe} creatives selected · ${De} of ${Hd.length} strategies enabled`
+                        ? `${activeStrategies} of ${Hd.length} strategies active during campaign`
                         : `${o.length} own creatives selected`,
                 }),
                 (0, U.jsxs)(`div`, {
@@ -923,14 +902,11 @@ function Jd() {
                                   `Seedance`,
                                 ][se],
                               }),
-                              (0, U.jsx)(_i, {
-                                className: `strategy-toggle`,
-                                "aria-label": `Enable ` + Hd[se].name,
-                                checked: de[se],
-                                onCheckedChange: (e) =>
-                                  fe((t) =>
-                                    t.map((t, n) => (n === se ? e : t)),
-                                  ),
+                              (0, U.jsx)(AigcModeSelector, {
+                                value: de[se],
+                                strategy: aigcNames[se],
+                                compact: true,
+                                onChange: (mode) => fe((current) => current.map((value, index) => index === se ? mode : value)),
                               }),
                             ],
                           }),
@@ -963,7 +939,7 @@ function Jd() {
                         className: `strategy-info-footer`,
                         children: (0, U.jsx)(`button`, {
                           onClick: () => {
-                            (M((e) => ({ ...e, enabled: [...de] })), le(null));
+                            (M((e) => withAigcStrategyModes(e, de)), le(null));
                           },
                           children: `Save`,
                         }),
