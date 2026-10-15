@@ -67,6 +67,7 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
   const [expanded, setExpanded] = (0, C.useState)([]);
   const [preview, setPreview] = (0, C.useState)(null);
   const [adoptionMessage, setAdoptionMessage] = (0, C.useState)("");
+  const [freshAdoption, setFreshAdoption] = (0, C.useState)(null);
   const active = config.strategyModes.filter((mode) => mode !== "manual").length;
   const toggleExpanded = (index) => setExpanded((current) => current.includes(index)
     ? current.filter((item) => item !== index) : [...current, index]);
@@ -81,6 +82,7 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
         ? items.map((value, item) => item === video ? next : value) : items),
     }));
     setAdoptionMessage(`${videoName(strategy, video)} ${next ? "adopted" : "adoption undone"}. Save changes to apply.`);
+    setFreshAdoption(next ? `${strategy}:${video}` : null);
   };
 
   return aigcNode("div", { className: "aigc-selection-panel" },
@@ -126,7 +128,11 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
               aigcNode("button", { className: "aigc-text-link", onClick: () => onDetails(index) }, "About this strategy")),
             aigcNode("div", { className: "aigc-generated-grid" }, ...zd.map((asset, video) => {
               const adopted = config.adopted[index][video];
-              return aigcNode("article", { className: `aigc-video-card${adopted ? " is-adopted" : ""}`, key: asset },
+              const adoptionKey = `${index}:${video}`;
+              const clearFreshAdoption = () => setFreshAdoption((current) => current === adoptionKey ? null : current);
+              return aigcNode("article", { className: `aigc-video-card${adopted ? " is-adopted" : ""}`, key: asset,
+                onPointerLeave: clearFreshAdoption,
+              },
                 aigcNode("div", { className: "aigc-video-media-wrap" },
                 aigcNode("button", {
                   className: "aigc-video-preview", type: "button",
@@ -136,13 +142,17 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
                   aigcNode("img", { src: Rd[(config.assets[index] + video) % Rd.length], alt: `${name} generated creative ${video + 1}` }),
                   aigcNode("span", { className: "aigc-video-play", "aria-hidden": true }, aigcNode(ue, { size: 17, fill: "currentColor" })),
                   aigcNode("span", { className: "aigc-duration" }, "00:15")),
-                adopted && aigcNode("span", { className: "aigc-adopted-badge" }, aigcNode(N, { size: 11 }), "Adopted"),
                 aigcNode("button", {
-                  className: `aigc-adopt-action${adopted ? " is-undo" : ""}`, type: "button",
+                  className: `aigc-adopt-action${adopted ? " is-adopted" : ""}${freshAdoption === adoptionKey ? " just-adopted" : ""}`, type: "button",
                   "aria-label": `${adopted ? "Undo adoption of" : "Adopt"} ${name} video ${video + 1}`,
                   "aria-pressed": adopted,
                   onClick: () => toggleAdoption(index, video),
-                }, aigcNode(adopted ? H : de, { size: 12 }), adopted ? "Undo" : "Adopt")),
+                  onBlur: clearFreshAdoption,
+                },
+                  aigcNode("span", { className: "aigc-adopt-label", "aria-hidden": true },
+                    aigcNode(adopted ? N : de, { size: 11 }), adopted ? "Adopted" : "Adopt"),
+                  adopted && aigcNode("span", { className: "aigc-cancel-label", "aria-hidden": true },
+                    aigcNode(H, { size: 11 }), "Cancel"))),
                 aigcNode("p", {}, videoName(index, video)),
               );
             })),
