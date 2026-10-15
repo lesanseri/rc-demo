@@ -22,6 +22,9 @@
 .aigc-performance-banner>svg{flex-shrink:0}
 .aigc-performance-banner p{flex:1;margin:0}
 .aigc-performance-banner strong{color:#259080;font-weight:600;white-space:nowrap}
+.editor-aigc-performance{align-items:flex-start;margin:12px 0 15px;padding:10px 12px}
+.editor-aigc-performance>svg{margin-top:2px}
+.ad-editor .editor-aigc-performance p{margin:0}
 .aigc-section-description{font-size:13px;color:#858d91;line-height:1.65;margin:0}
 .aigc-text-link{color:#2d9c9b;font-size:12px;display:inline-flex;align-items:center;gap:5px;cursor:pointer}
 .aigc-brand-link{padding-top:5px;white-space:nowrap}

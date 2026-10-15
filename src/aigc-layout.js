@@ -62,6 +62,15 @@ function AigcModeSelector({ value, onChange, strategy, compact = false }) {
   }, mode.label)));
 }
 
+function AigcPerformanceBanner({ compact = false }) {
+  return aigcNode("div", { className: `aigc-performance-banner${compact ? " editor-aigc-performance" : ""}`,
+    role: "note", "aria-label": "Creative performance uplift" },
+    aigcNode(ve, { size: 16, "aria-hidden": true }),
+    aigcNode("p", {}, "Campaigns using auto-generated creatives saw ",
+      aigcNode("strong", {}, "+28% CTR"), " and ",
+      aigcNode("strong", {}, "+19% CVR"), " on average."));
+}
+
 function AigcEditorSummary({ config, onEdit }) {
   const active = config.strategyModes.filter((mode) => mode !== "manual").length;
   const adopted = config.adopted.flat().filter(Boolean).length;
@@ -70,8 +79,7 @@ function AigcEditorSummary({ config, onEdit }) {
       aigcNode(ge, { size: 17 }), "Auto-generated",
       aigcNode("button", { onClick: onEdit, "aria-label": "Edit auto-generated assets and settings" },
         aigcNode(le, { size: 17 }))),
-    aigcNode("p", { className: "editor-aigc-description" },
-      "Keep your campaign fresh with new AI creatives. Choose how each strategy adds new videos during your campaign."),
+    aigcNode(AigcPerformanceBanner, { compact: true }),
     aigcNode("strong", { className: "editor-aigc-strategy-title" },
       `Generation strategy during campaign (${active}/${aigcNames.length})`),
     aigcNode("div", { className: "editor-aigc-strategies" },
@@ -119,11 +127,7 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
             aigcNode("span", { className: "aigc-active-count" }, `${active} of 4 active`)),
           aigcNode("p", { className: "aigc-section-description" },
             "Keep your campaign fresh with a continuous supply of AI video variations to help reduce creative fatigue. Choose how each strategy adds them to your campaign."))),
-      aigcNode("div", { className: "aigc-performance-banner", role: "note", "aria-label": "Creative performance uplift" },
-        aigcNode(ve, { size: 16, "aria-hidden": true }),
-        aigcNode("p", {}, "Campaigns using auto-generated creatives saw ",
-          aigcNode("strong", {}, "+28% CTR"), " and ",
-          aigcNode("strong", {}, "+19% CVR"), " on average.")),
+      aigcNode(AigcPerformanceBanner),
       aigcNode("div", { className: "aigc-strategy-list" }, ...aigcNames.map((name, index) => {
         const isOpen = expanded.includes(index);
         const mode = config.strategyModes[index];
