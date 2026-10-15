@@ -144,9 +144,9 @@ function AigcSelectionPanel({ config, onChange, onDetails, onControls }) {
                 aigcNode("span", { className: "aigc-strategy-description" }, aigcDescriptions[index]),
                 aigcNode("button", {
                   className: "aigc-text-link aigc-brand-controls-link", type: "button",
-                  "aria-label": `Brand controls for ${name}`,
+                  "aria-label": `See details and previews for ${name}`,
                   onClick: () => onControls(index),
-                }, "Brand controls"))),
+                }, "See details and previews"))),
             aigcNode("div", { className: "aigc-strategy-settings" },
               aigcNode(AigcModeSelector, { value: mode, strategy: name,
                 onChange: (value) => setMode(index, value) })),
