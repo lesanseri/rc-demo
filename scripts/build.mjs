@@ -14,7 +14,7 @@ function replaceBlock(start, end, value, legacyStart, legacyEnd) {
 }
 replaceBlock("/* AIGC_EDITOR_START */", "/* AIGC_EDITOR_END */", read("src/editor.js"), "function xi({", "function wi({values:");
 replaceBlock("/* AIGC_BRAND_CONTROLS_START */", "/* AIGC_BRAND_CONTROLS_END */", read("src/brand-controls.js"), "function Ti({", "var Ei=");
-replaceBlock("/* AIGC_APP_START */", "/* AIGC_APP_END */", read("src/aigc-layout.js") + "\n" + read("src/app.js"), "function Jd(){", "(0,we.createRoot)");
+replaceBlock("/* AIGC_APP_START */", "/* AIGC_APP_END */", read("src/aigc-layout.js") + "\n" + read("src/strategy-detail.js").replace("__AIGC_REFERENCE_PREVIEW__", "data:image/jpeg;base64," + readFileSync(path.join(root, "assets/remix-reference-preview.jpg")).toString("base64")) + "\n" + read("src/app.js"), "function Jd(){", "(0,we.createRoot)");
 const css = `<style id="aigc-creation-layout">\n${read("src/aigc-layout.css")}\n</style>`;
 html = html.includes('<style id="aigc-creation-layout">')
   ? html.replace(/<style id="aigc-creation-layout">[\s\S]*?<\/style>/, css)

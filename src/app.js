@@ -84,13 +84,12 @@ function Jd() {
     [ne, z] = (0, C.useState)(null),
     [B, re] = (0, C.useState)([]),
     [V, ie] = (0, C.useState)(null),
-    [ae, oe] = (0, C.useState)(!1),
     [se, le] = (0, C.useState)(null),
     [de, fe] = (0, C.useState)([]),
     [me, he] = (0, C.useState)(``),
     [_e, ye] = (0, C.useState)(``);
   function be(e) {
-    (fe([...j.strategyModes]), le(e), oe(!1));
+    (fe([...j.strategyModes]), le(e));
   }
   function xe(e) {
     let t = e.source + `:` + e.strategyIndex;
@@ -816,140 +815,20 @@ function Jd() {
               }),
             (0, U.jsx)(Mu, {
               open: se !== null,
-              onOpenChange: (e) => {
-                e || le(null);
-              },
+              onOpenChange: (open) => { if (!open) le(null); },
               children: (0, U.jsx)(Fu, {
-                className: `strategy-info-dialog`,
-                overlayClassName: `strategy-info-backdrop`,
-                showCloseButton: !1,
-                children:
-                  se !== null &&
-                  (0, U.jsxs)(U.Fragment, {
-                    children: [
-                      (0, U.jsxs)(`header`, {
-                        className: `strategy-info-header`,
-                        children: [
-                          (0, U.jsx)(Iu, { children: `Generation strategy` }),
-                          (0, U.jsxs)(`div`, {
-                            children: [
-                              (0, U.jsx)(`button`, {
-                                "aria-label": `Previous strategy`,
-                                disabled: se === 0,
-                                onClick: () => {
-                                  (le(se - 1), oe(!1));
-                                },
-                                children: `‹`,
-                              }),
-                              (0, U.jsxs)(`span`, {
-                                children: [se + 1, ` / `, Hd.length],
-                              }),
-                              (0, U.jsx)(`button`, {
-                                "aria-label": `Next strategy`,
-                                disabled: se === Hd.length - 1,
-                                onClick: () => {
-                                  (le(se + 1), oe(!1));
-                                },
-                                children: `›`,
-                              }),
-                              (0, U.jsx)(`button`, {
-                                className: `strategy-info-close`,
-                                "aria-label": `Close strategy description`,
-                                onClick: () => le(null),
-                                children: (0, U.jsx)(H, { size: 20 }),
-                              }),
-                            ],
-                          }),
-                        ],
-                      }),
-                      (0, U.jsxs)(`div`, {
-                        className:
-                          `strategy-info-media` + (ae ? ` is-playing` : ``),
-                        children: [
-                          (0, U.jsx)(`img`, {
-                            src: Rd[j.assets[se]],
-                            alt: Hd[se].name + ` preview`,
-                          }),
-                          (0, U.jsx)(`button`, {
-                            className: `strategy-preview-play`,
-                            "aria-label": ae ? `Pause preview` : `Play preview`,
-                            title: `Animated image preview`,
-                            onClick: () => oe((e) => !e),
-                            children: ae
-                              ? (0, U.jsx)(ce, {
-                                  size: 28,
-                                  fill: `currentColor`,
-                                })
-                              : (0, U.jsx)(ue, {
-                                  size: 28,
-                                  fill: `currentColor`,
-                                }),
-                          }),
-                          ae &&
-                            (0, U.jsx)(`span`, {
-                              className: `strategy-preview-note`,
-                              children: `Animated preview`,
-                            }),
-                        ],
-                      }),
-                      (0, U.jsxs)(`section`, {
-                        className: `strategy-info-copy`,
-                        children: [
-                          (0, U.jsxs)(`div`, {
-                            className: `strategy-info-name`,
-                            children: [
-                              (0, U.jsx)(`h3`, {
-                                children: [
-                                  `Visual overlay`,
-                                  `Audio refresh`,
-                                  `Remix generation`,
-                                  `Seedance`,
-                                ][se],
-                              }),
-                              (0, U.jsx)(AigcModeSelector, {
-                                value: de[se],
-                                strategy: aigcNames[se],
-                                compact: true,
-                                onChange: (mode) => fe((current) => current.map((value, index) => index === se ? mode : value)),
-                              }),
-                            ],
-                          }),
-                          (0, U.jsx)(Lu, {
-                            children: [
-                              `Adds lightweight overlays to existing footage while keeping the original product story and core video intact.`,
-                              `Refreshes your existing video with music and voiceover variations while preserving the original visuals and product story.`,
-                              `Combines selected clips and adjusts their order and pacing to create new variations of your existing video.`,
-                              `Creates new video variations from your existing creative assets, with fresh scenes and visual treatments.`,
-                            ][se],
-                          }),
-                          (0, U.jsx)(`div`, {
-                            className: `strategy-info-tags`,
-                            children: [
-                              [`Text`, `Stickers`, `CTA`],
-                              [`Music`, `Voiceover`, `Sound effects`],
-                              [`Selection clips`, `Scene order`, `Pacing`],
-                              [
-                                `Text to video`,
-                                `Image to video`,
-                                `Video variations`,
-                              ],
-                            ][se].map((e) =>
-                              (0, U.jsx)(`span`, { children: e }, e),
-                            ),
-                          }),
-                        ],
-                      }),
-                      (0, U.jsx)(`footer`, {
-                        className: `strategy-info-footer`,
-                        children: (0, U.jsx)(`button`, {
-                          onClick: () => {
-                            (M((e) => withAigcStrategyModes(e, de)), le(null));
-                          },
-                          children: `Save`,
-                        }),
-                      }),
-                    ],
-                  }),
+                className: `strategy-detail-dialog`,
+                overlayClassName: `strategy-detail-backdrop`,
+                showCloseButton: false,
+                children: se !== null && (0, U.jsx)(AigcStrategyDetail, {
+                  key: se,
+                  index: se,
+                  config: j,
+                  mode: de[se],
+                  onModeChange: (mode) => fe((current) => current.map((value, index) => index === se ? mode : value)),
+                  onClose: () => le(null),
+                  onSave: () => { M((current) => withAigcStrategyModes(current, de)); le(null); },
+                }),
               }),
             }),
             V !== null &&
