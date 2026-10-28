@@ -53,7 +53,7 @@ function readAigcConfig(e = `materials`) {
     // user's adoption. Older automatic selections remain stored separately.
     const adopted = aigcNames.map((_, strategy) => zd.map((_, video) =>
       Array.isArray(t.adopted?.[strategy]) && t.adopted[strategy][video] === true));
-    return withAigcStrategyModes({ ...t, adopted }, modes);
+    return withAigcAutomation({ ...t, adopted }, t.addMode, t.automationLayoutVersion === 1 ? t.enabled : modes.map((mode) => mode !== "manual"));
 }
 function Jd() {
   let [brandControls, setBrandControls] = (0, C.useState)(readAigcBrandControls),
@@ -89,7 +89,7 @@ function Jd() {
     [me, he] = (0, C.useState)(``),
     [_e, ye] = (0, C.useState)(``);
   function be(e) {
-    (fe([...j.strategyModes]), le(e));
+    (fe(j.enabled.map((active) => active ? "auto" : "manual")), le(e));
   }
   function xe(e) {
     let t = e.source + `:` + e.strategyIndex;
@@ -110,7 +110,7 @@ function Jd() {
       ye(`Could not save. Please try again.`);
     }
   }
-  const activeStrategies = j.strategyModes.filter((mode) => mode !== "manual").length;
+  const activeStrategies = j.enabled.filter(Boolean).length;
   return (0, U.jsxs)(`main`, {
     className: `home`,
     children: [
@@ -162,7 +162,7 @@ function Jd() {
                         (0, U.jsx)(`button`, {
                           className: g === `groups` ? `active` : ``,
                           onClick: () => _(`groups`),
-                          children: `Creative groups`,
+                          children: `Recommended`,
                         }),
                         (0, U.jsx)(`button`, {
                           className: g === `library` ? `active` : ``,
@@ -827,7 +827,8 @@ function Jd() {
                   mode: de[se],
                   onModeChange: (mode) => fe((current) => current.map((value, index) => index === se ? mode : value)),
                   onClose: () => le(null),
-                  onSave: () => { M((current) => withAigcStrategyModes(current, de)); le(null); },
+                  onControls: () => { le(null); ie(se); },
+                  onSave: () => { M((current) => withAigcAutomation(current, current.addMode, de.map((mode) => mode !== "manual"))); le(null); },
                 }),
               }),
             }),

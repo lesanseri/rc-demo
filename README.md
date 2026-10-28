@@ -6,13 +6,11 @@ Standalone TikTok Ads Manager creative-assets prototype. Open `index.html` direc
 
 - Auto-generated is a dedicated section in the main Creative assets form, below manually selected assets. It is independent of Selected recommendations.
 - The main section emphasizes campaign generation and displays each strategy's own handling mode.
-- Its edit action opens the Auto-generated tab, headed AI creative automation. Available now is removed from this tab. Individual adoption is a secondary action within each expanded strategy.
-- The automation introduction is followed by a green performance banner with the original illustrative +28% CTR / +19% CVR figures. There is no redundant Generation strategies subheading.
-- Four strategies (Visual overlay, Audio refresh, Remix generation, Seedance) independently support Auto-add / Notify for approval / Don't add in place of toggles.
-- Click a strategy title or image to open a reference-style side panel: freshness and brand-risk indicators, best-fit use case, an asset-change table, four sample thumbnails, Generated / Original tabs, and a top-right strategy switch with Save / Cancel. The Remix preview frame is extracted from the user-supplied design reference. The far-right chevron expands generated videos; there is no separate About this strategy link.
-- Each strategy expands to show its generated creative previews. One compact 66 × 22 px control stays at the bottom right: hover or keyboard focus reveals Adopt; adopting changes it in place to Adopted; hovering or focusing again reveals Cancel in the same control. Touch devices show the action without hover. The preview dialog supports the same adoption action.
-- Manual adoptions are independent of future-generation preferences, including Don't add, and never change a strategy mode. Save commits them; Cancel discards draft adoptions. Opening or playing a preview does not adopt a video.
-- Brand controls are reached through See details and previews inside each strategy, with the accordion chevron at the far right. The original control form is retained, scoped to that strategy: general brand settings plus Music Refresh for Audio refresh or product/image settings for Seedance. Each strategy saves and reloads its own controls independently.
+- The Auto-generated drawer follows the reference layout: Available now contains ten selectable creatives across two pages; During campaign contains one shared Auto-add / Notify for approval / Don't add preference and four independent strategy switches.
+- Available now supports selecting individual creatives, an indeterminate Select all state across both pages, and persistent selections. Saving applies selections; cancelling discards drafts.
+- Strategies appear as Remix generation, Visual overlay, Audio refresh and Seedance. Titles, images and See details and previews open the existing reference-style strategy explanation panel.
+- Strategy eligibility is independent of handling mode. Selecting Don't add preserves switch states; changing handling mode does not select or clear existing creatives. Detail Save updates the corresponding switch; Cancel discards it.
+- The main editor retains its green performance banner and strategy summary. The strategy detail footer opens Brand controls with the original per-strategy settings and persistence.
 - Save updates the main summary and local storage. Cancel discards draft strategy changes. Brand Kit controls and strategy descriptions remain available.
 - Previously saved global modes and disabled strategies migrate to per-strategy preferences. Existing asset selections remain unchanged.
 - Existing demo strategies, including Seedance and Remix, are retained. This prototype does not represent current production availability.

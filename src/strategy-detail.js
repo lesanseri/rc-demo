@@ -54,7 +54,7 @@ const strategyDetailCopy = [
   },
 ];
 
-function AigcStrategyDetail({ index, config, mode, onModeChange, onClose, onSave }) {
+function AigcStrategyDetail({ index, config, mode, onModeChange, onClose, onSave, onControls }) {
   const [sample, setSample] = (0, C.useState)(0);
   const [version, setVersion] = (0, C.useState)("Generated");
   const [playing, setPlaying] = (0, C.useState)(false);
@@ -144,6 +144,7 @@ function AigcStrategyDetail({ index, config, mode, onModeChange, onClose, onSave
               aigcNode(playing ? ce : ue, { size: 25, fill: "currentColor" }))))),
       ),
       aigcNode("footer", { className: "strategy-detail-footer" },
+        aigcNode("button", { className: "strategy-detail-brand-controls", type: "button", onClick: onControls }, "Brand controls"),
         aigcNode("button", { className: "secondary", type: "button", onClick: onClose }, "Cancel"),
         aigcNode("button", { className: "primary", type: "button", onClick: onSave }, "Save")),
     ),

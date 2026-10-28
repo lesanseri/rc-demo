@@ -180,3 +180,50 @@ body:has(.strategy-detail-dialog) .aigc-drawer{visibility:hidden}
 .strategy-detail-footer{padding:22px 12px 6px}
 @media(max-height:850px) and (min-width:801px){.strategy-detail-body{grid-template-rows:minmax(0,1fr);overflow:hidden}.strategy-detail-about{padding:16px;overflow:auto;min-height:0}.strategy-detail-about>h2{font-size:16px;margin-bottom:14px}.strategy-detail-facts{gap:6px;margin-bottom:16px}.strategy-detail-fact{padding:8px 12px;gap:2px;min-height:46px}.strategy-detail-fact>span{font-size:11px}.strategy-detail-fact>strong{font-size:13px}.strategy-detail-about>h3{font-size:13px;margin-bottom:10px}.strategy-detail-table{font-size:12px}.strategy-detail-table th,.strategy-detail-table td{padding:6px 12px;line-height:1.3}.strategy-detail-table small{font-size:11px;line-height:1.3}.strategy-detail-player-wrap{min-height:0}}
 @media(max-width:800px){.strategy-detail-body{padding-right:12px;grid-template-columns:minmax(0,1fr) 245px}}
+/* First drawer layer: generated selections followed by campaign automation. */
+.aigc-reference-first-layer{gap:16px}
+.aigc-reference-first-layer>section{padding:24px;background:#fff;border:0;border-radius:8px}
+.aigc-reference-first-layer h2{font-size:16px;line-height:1.4;margin:0 0 7px;font-weight:600}
+.aigc-reference-first-layer .aigc-section-description{font-size:13px;line-height:1.5;color:#8a8e90}
+.aigc-available-toolbar{display:flex;justify-content:space-between;align-items:center;margin:16px 0 10px;max-width:880px}
+.aigc-select-all{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#51575a;cursor:pointer}
+.aigc-reference-first-layer input[type=checkbox]{appearance:auto;width:16px;height:16px;margin:0;accent-color:#13a4a1;cursor:pointer}
+.aigc-available-pagination{display:flex;align-items:center;gap:12px;color:#666d71;font-size:12px}
+.aigc-available-pagination button{font-size:22px;line-height:20px;cursor:pointer;color:#656d71;padding:0 3px}
+.aigc-available-pagination button:disabled{opacity:.35;cursor:default}
+.aigc-available-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;max-width:880px}
+.aigc-available-card{min-width:0}
+.aigc-available-media{display:block;position:relative;width:100%;aspect-ratio:1;background:#eee;border-radius:3px;overflow:hidden;cursor:pointer;border:2px solid transparent}
+.aigc-available-media>img{width:100%;height:100%;object-fit:cover}
+.aigc-available-media>input{position:absolute;top:6px;right:6px;z-index:1}
+.aigc-available-media>.aigc-duration{left:6px;bottom:6px;font-size:11px}
+.aigc-available-card.is-selected .aigc-available-media{border-color:#17a6a1}
+.aigc-available-id{font-size:11px;line-height:1.4;color:#8c9194;margin:6px 0}
+.aigc-available-tag{display:inline-flex;align-items:center;gap:4px;background:#f5f5f5;border-radius:2px;color:#767d80;padding:2px 4px;font-size:10px;white-space:nowrap;max-width:100%}
+.aigc-new-generations{margin-top:26px}
+.aigc-reference-first-layer h3{font-size:13px;font-weight:600;line-height:1.5;margin:0 0 6px}
+.aigc-new-generations .aigc-strategy-modes{width:345px;max-width:100%}
+.aigc-new-generations .aigc-strategy-modes>button{padding:8px 10px;font-size:12px}
+.aigc-generation-help{font-size:12px;color:#8b9093;margin:9px 0 0;line-height:1.5}
+.aigc-generation-strategy-heading{margin-top:25px}
+.aigc-reference-first-layer .aigc-strategy-list{max-width:600px;gap:12px;margin-top:12px}
+.aigc-strategy-reference-card{display:flex;align-items:flex-start;gap:14px;background:#f7f8f8;border-radius:5px;padding:14px;position:relative;min-width:0}
+.aigc-strategy-reference-card .aigc-strategy-image-link{width:76px;min-height:76px;align-self:flex-start;height:76px}
+.aigc-strategy-reference-card .aigc-strategy-copy{padding-right:36px;gap:5px}
+.aigc-strategy-reference-card .aigc-strategy-name{font-size:14px;line-height:1.4}
+.aigc-strategy-reference-card .aigc-strategy-description{font-size:12px;line-height:1.5;color:#8a8f92}
+.aigc-strategy-reference-card .aigc-brand-controls-link{color:#454d50;font-size:12px;margin:1px 0 0;gap:6px}
+.aigc-strategy-reference-card .aigc-brand-controls-link>span{font-size:20px;line-height:12px;color:#78868c}
+.aigc-campaign-toggle{position:absolute;right:14px;top:15px}
+.strategy-detail-footer .strategy-detail-brand-controls{margin-right:auto;border:0;color:#258f8c;background:transparent;padding-left:7px}
+@media(max-width:700px){.aigc-reference-first-layer>section{padding:17px}.aigc-available-grid{gap:8px}.aigc-available-tag{font-size:8px;white-space:normal}.aigc-available-id{font-size:9px}.aigc-strategy-reference-card .aigc-strategy-copy{padding-right:24px}.aigc-strategy-reference-card .aigc-strategy-image-link{width:60px;height:70px;min-height:70px}}
+.aigc-drawer:has(.aigc-reference-first-layer){top:64px!important;height:calc(100dvh - 64px)!important;width:80vw!important;max-width:none!important}
+.aigc-drawer:has(.aigc-reference-first-layer) .drawer-heading{position:relative;padding:18px 16px 0}
+.aigc-drawer:has(.aigc-reference-first-layer) .drawer-heading>.icon-button{position:fixed;left:calc(20vw - 34px);top:64px;width:34px;height:34px;color:white;background:#565a5b;border-radius:3px 0 0 3px}
+.aigc-reference-first-layer .aigc-available-toolbar,.aigc-reference-first-layer .aigc-available-grid{max-width:770px}
+.aigc-reference-first-layer .aigc-strategy-list{width:64%;min-width:min(100%,520px)}
+@media(max-width:700px){.aigc-drawer:has(.aigc-reference-first-layer){width:calc(100vw - 32px)!important}.aigc-drawer:has(.aigc-reference-first-layer) .drawer-heading>.icon-button{left:0;width:32px}.aigc-reference-first-layer .aigc-strategy-list{width:100%}.aigc-drawer:has(.aigc-reference-first-layer) .asset-tabs{overflow-x:auto;gap:18px}.aigc-drawer:has(.aigc-reference-first-layer) .drawer-heading>div{min-width:0;width:100%}.aigc-available-grid{grid-template-columns:repeat(5,minmax(92px,1fr));overflow-x:auto;padding-bottom:5px}}
+.aigc-drawer:has(.aigc-reference-first-layer) .drawer-title{font-size:18px;padding:0;line-height:1.5}
+.aigc-drawer:has(.aigc-reference-first-layer) .asset-tabs{height:44px}
+.aigc-reference-first-layer>section{padding:20px}
+@media(max-width:700px){.aigc-reference-first-layer>section{padding:17px}}
